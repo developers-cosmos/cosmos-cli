@@ -1,0 +1,2 @@
+BAZELISK_HOME=build/.bazelisk
+USE_BAZEL_VERSION=6.3.2
