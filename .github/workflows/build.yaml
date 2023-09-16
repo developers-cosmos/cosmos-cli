@@ -1,4 +1,4 @@
-name: Build and Test C++ Project
+name: Build and Test Cosmos CLI
 
 on:
   push:
