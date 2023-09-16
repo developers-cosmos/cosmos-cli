@@ -17,8 +17,10 @@ jobs:
     - name: Install Bazelisk
       run: |
         # Install Bazelisk
-        curl -Lo /usr/local/bin/bazel https://github.com/bazelbuild/bazelisk/releases/latest/download/bazelisk-linux-amd64
-        chmod +x /usr/local/bin/bazel
+        curl -Lo bazel https://github.com/bazelbuild/bazelisk/releases/latest/download/bazelisk-linux-amd64
+        chmod +x bazel
+        mv bazel "$HOME/bin/"
+        export PATH="$HOME/bin:$PATH"
         bazel --version
 
     - name: Install Dependencies
