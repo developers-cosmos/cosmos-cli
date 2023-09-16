@@ -1,0 +1,76 @@
+name: Fix linting errors
+
+on:
+    push:
+      branches:
+        - '!main'
+    pull_request:
+
+jobs:
+  analyse:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Install Clang Format
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y clang-format
+
+    - name: Set branch name
+      run: |
+        echo "BRANCH_NAME=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_ENV
+
+    - name: Checkout code
+      uses: actions/checkout@v2
+      with:
+        ref: ${{ env.BRANCH_NAME }}
+
+    - name: Run clang-format
+      run: |
+        clang-format -i src/*.cpp
+
+    - name: Commit changes
+      id: commit_changes
+      run: |
+        git config --global user.email "action@github.com"
+        git config --global user.name "GitHub Action"
+        git add .
+        if [ -z "$(git status --porcelain)" ]; then
+          echo "No changes to commit."
+          echo "NO_COMMIT=true" >> $GITHUB_ENV
+          exit 0
+        fi
+        git commit -m "Fix linting errors"
+
+    - name: Push changes
+      id: push_changes
+      if: ${{ env.NO_COMMIT != 'true' }}
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        branch: ${{ env.BRANCH_NAME }}
+
+    - name: Comment on Pull Request
+      if: (${{ env.NO_COMMIT }} != 'true') && (${{ github.event_name }} == 'pull_request')
+      uses: actions/github-script@v2
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        script: |
+          if (process.env.NO_COMMIT !== 'true') {
+            const result = await github.pulls.list({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              head: context.sha,
+            });
+
+            if (result.data.length) {
+              const pullRequest = result.data[0];
+              await github.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: pullRequest.number,
+                body: 'Linting errors observed and fixed 🎉. Please pull the latest changes!!',
+              });
+            }
+          }

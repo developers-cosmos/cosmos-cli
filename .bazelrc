@@ -1,0 +1,10 @@
+startup --output_user_root=build/.bazel
+startup --output_base=build/bazel
+
+build --cxxopt -std=c++17
+build --cxxopt -g
+
+# Config to build for optimized with debug information
+
+build:optdbg -c opt
+build:optdbg --copt -g
