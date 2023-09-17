@@ -7,39 +7,43 @@
   };
 
   outputs = { self, nixpkgs, flake-utils, ... }:
-    flake-utils.lib.eachSystem ["x86_64-linux" "aarch64-linux" "aarch64-darwin"] (system:
+    flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs {
           inherit system;
         };
-      in
-      {
-        # Define the derivation build phase
-        derivation = pkgs.stdenv.mkDerivation {
+        nativeBuildInputs = with pkgs;
+        [
+          bazel
+          bazelisk
+        ];
+        cosmos = pkgs.stdenv.mkDerivation {
           name = "cosmos";
           version = "0.0.1";
           src = self;
+          nativeBuildInputs = nativeBuildInputs;
           buildPhase = ''
+            echo $hello-world
             bazelisk build //src:hello-world
           '';
 
           installPhase = ''
             mkdir -p $out/bin;
-            cp -r bazel-bin/hello-world $out/bin;
+            cp -r bazel-bin/src/hello-world $out/bin;
           '';
         };
-
-        devShells = {
-          default = pkgs.mkShell {
-            packages = [
-              pkgs.bazel
-              pkgs.bazelisk
-            ];
-          };
-
-          # default = pkgs.devshell.mkShell {
-          #   imports = [ (pkgs.devshell.importTOML ./devshell.toml) ];
-          # };
+      in rec
+      {
+        #defaultPackage = cosmos;
+        devShells.default = pkgs.mkShell {
+          nativeBuildInputs = nativeBuildInputs ++ [
+            cosmos
+          ];
         };
+
+        # default = pkgs.devshell.mkShell {
+        #   imports = [ (pkgs.devshell.importTOML ./devshell.toml) ];
+        # };
+
       });
 }
