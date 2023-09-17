@@ -23,21 +23,24 @@
           src = self;
           nativeBuildInputs = nativeBuildInputs;
           buildPhase = ''
-            bazel build //src:hello-world;
+            bazel build //src:cosmos;
           '';
 
           installPhase = ''
             mkdir -p $out/bin;
-            cp -r bazel-bin/src/hello-world $out/bin;
+            cp -r bazel-bin/src/cosmos $out/bin;
           '';
         };
       in rec
       {
         defaultPackage = cosmos;
-        devShells.default = pkgs.mkShell {
-          nativeBuildInputs = nativeBuildInputs ++ [
-            cosmos
-          ];
+
+        devShells = {
+          default = pkgs.mkShell {
+            packages = nativeBuildInputs ++ [
+              cosmos
+            ];
+          };
         };
 
         # default = pkgs.devshell.mkShell {
