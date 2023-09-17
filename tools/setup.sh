@@ -4,6 +4,8 @@
 
 brew install bazelisk
 
+# sh <(curl -L https://nixos.org/nix/install)
+
 # for linting
 brew install clang-format
 brew install buildifier
