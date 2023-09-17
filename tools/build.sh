@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-bazelisk build //src:hello-world
+bazelisk build //src:cosmos

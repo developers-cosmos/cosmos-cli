@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-bazelisk run //src:hello-world
+bazelisk run //src:cosmos
