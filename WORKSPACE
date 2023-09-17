@@ -1,0 +1,1 @@
+workspace(name = "cosmos-cli")
