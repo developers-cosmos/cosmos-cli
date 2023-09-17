@@ -23,7 +23,7 @@
           src = self;
           nativeBuildInputs = nativeBuildInputs;
           buildPhase = ''
-            bazel build //src:hello-world
+            bazel build //src:hello-world;
           '';
 
           installPhase = ''
@@ -33,7 +33,7 @@
         };
       in rec
       {
-        #defaultPackage = cosmos;
+        defaultPackage = cosmos;
         devShells.default = pkgs.mkShell {
           nativeBuildInputs = nativeBuildInputs ++ [
             cosmos
