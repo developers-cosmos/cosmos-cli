@@ -23,7 +23,6 @@
           src = self;
           nativeBuildInputs = nativeBuildInputs;
           buildPhase = ''
-            echo $hello-world
             bazelisk build //src:hello-world
           '';
 
