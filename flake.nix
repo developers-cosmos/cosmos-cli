@@ -14,8 +14,8 @@
         };
         nativeBuildInputs = with pkgs;
         [
-          bazel
-          bazelisk
+          bazel_6
+          bazel-buildtools
         ];
         cosmos = pkgs.stdenv.mkDerivation {
           name = "cosmos";
@@ -23,7 +23,7 @@
           src = self;
           nativeBuildInputs = nativeBuildInputs;
           buildPhase = ''
-            bazelisk build //src:hello-world
+            bazel build //src:hello-world
           '';
 
           installPhase = ''
