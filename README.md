@@ -25,3 +25,9 @@ The above command produces the following output.
 ```shell
 [Cosmos CLI]: Hello from Developers Cosmos!
 ```
+
+To enter into the flake environment run the below command:
+
+```she
+nix shell github:developers-cosmos/cosmos-cli
+```

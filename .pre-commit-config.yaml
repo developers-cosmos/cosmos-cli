@@ -21,7 +21,6 @@ repos:
     hooks:
       - id: clang-format
         name: Check format of C/C++
-        exclude: \.proto
         entry: clang-format -i
 
   # - repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook

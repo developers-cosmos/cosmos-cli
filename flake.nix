@@ -2,7 +2,7 @@
   description = "Cosmos CLI";
 
   inputs = {
-    nixpkgs.url = "https://releases.nixos.org/nixos/23.05/nixos-23.05.861.d3bb401dcfc/nixexprs.tar.xz";
+    nixpkgs.url = "https://releases.nixos.org/nixos/23.05/nixos-23.05.3580.5d017a8822e0/nixexprs.tar.xz";
     flake-utils.url = "git+https://github.com/numtide/flake-utils?ref=main";
   };
 
